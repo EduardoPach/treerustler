@@ -1,4 +1,8 @@
+#[allow(dead_code)]
+
 pub mod utils {
+    use rand::prelude::*;
+
     use std::collections::HashMap;
     /// Computes the relative frequency of each unique element in a vector
     ///  categorical vector.
@@ -59,5 +63,40 @@ pub mod utils {
         let probabilities = get_probabilities(v);
         let p_2: f64 = probabilities.values().map(|&p| p.powi(2)).sum();
         1.0 - p_2
+    }
+
+    #[derive(Debug)]
+    pub struct Data {
+        pub rows: usize,
+        pub cols: usize,
+        pub data: Vec<Vec<f64>>,
+    }
+
+    impl Data {
+        pub fn new(rows: usize, cols: usize, data: Vec<Vec<f64>>) -> Data {
+            Data { rows, cols, data }
+        }
+
+        /// Generates a random matrix of size (rows, cols) with values in the range [0, 1).
+        ///
+        /// # Arguments
+        ///
+        /// * `rows` - The number of rows in the matrix
+        /// * `cols` - The number of columns in the matrix
+        ///
+        /// # Examples
+        ///
+        /// ```
+        /// let data: treerustler::utils::Data = treerustler::utils::Data::random_data(10, 3);
+        /// assert_eq!(data.rows, 10);
+        /// assert_eq!(data.cols, 3);
+        /// ```
+        pub fn random_data(rows: usize, cols: usize) -> Data {
+            let mut rng: ThreadRng = rand::thread_rng();
+            let data: Vec<Vec<f64>> = (0..rows)
+                .map(|_| (0..cols).map(|_| rng.gen_range(0.0..1.0)).collect())
+                .collect();
+            Data::new(rows, cols, data)
+        }
     }
 }

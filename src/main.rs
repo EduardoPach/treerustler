@@ -13,4 +13,6 @@ fn main() {
     println!("Entropy Loss: {}", entropy);
     let gini: f64 = utils::gini_index(&v);
     println!("Gini Index: {}", gini);
+    let data: utils::Data = utils::Data::random_data(10, 3);
+    println!("{:#?}", data);
 }
