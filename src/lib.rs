@@ -1,8 +1,6 @@
 #[allow(dead_code)]
 
 pub mod utils {
-    use rand::prelude::*;
-
     use std::collections::HashMap;
     /// Computes the relative frequency of each unique element in a vector
     ///  categorical vector.
@@ -64,7 +62,12 @@ pub mod utils {
         let p_2: f64 = probabilities.values().map(|&p| p.powi(2)).sum();
         1.0 - p_2
     }
+}
 
+pub mod data {
+    use rand::prelude::*;
+
+    /// A struct for storing data in a matrix format.
     #[derive(Debug)]
     pub struct Data {
         pub rows: usize,
@@ -87,7 +90,7 @@ pub mod utils {
         /// # Examples
         ///
         /// ```
-        /// let data: treerustler::utils::Data = treerustler::utils::Data::random_data(10, 3);
+        /// let data: treerustler::data::Data = treerustler::data::Data::random_data(10, 3);
         /// assert_eq!(data.rows, 10);
         /// assert_eq!(data.cols, 3);
         /// ```

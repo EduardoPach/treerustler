@@ -1,4 +1,5 @@
 use rand::prelude::*;
+use treerustler::data;
 use treerustler::utils;
 
 fn create_vector(size: usize, n_classes: u8) -> Vec<u8> {
@@ -13,6 +14,6 @@ fn main() {
     println!("Entropy Loss: {}", entropy);
     let gini: f64 = utils::gini_index(&v);
     println!("Gini Index: {}", gini);
-    let data: utils::Data = utils::Data::random_data(10, 3);
+    let data: data::Data = data::Data::random_data(10, 3);
     println!("{:#?}", data);
 }
