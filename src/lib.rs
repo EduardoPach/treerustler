@@ -76,10 +76,6 @@ pub mod data {
     }
 
     impl Data {
-        pub fn new(rows: usize, cols: usize, data: Vec<Vec<f64>>) -> Data {
-            Data { rows, cols, data }
-        }
-
         /// Generates a random matrix of size (rows, cols) with values in the range [0, 1).
         ///
         /// # Arguments
@@ -94,12 +90,48 @@ pub mod data {
         /// assert_eq!(data.rows, 10);
         /// assert_eq!(data.cols, 3);
         /// ```
-        pub fn random_data(rows: usize, cols: usize) -> Data {
+        pub fn from_random(rows: usize, cols: usize) -> Data {
             let mut rng: ThreadRng = rand::thread_rng();
             let data: Vec<Vec<f64>> = (0..rows)
                 .map(|_| (0..cols).map(|_| rng.gen_range(0.0..1.0)).collect())
                 .collect();
-            Data::new(rows, cols, data)
+            Data { rows, cols, data }
+        }
+
+        /// Generates a matrix from a string where rows are separeted by a semicolon and columns
+        /// are separated by whitespace.
+        ///
+        /// # Arguments
+        ///
+        /// * `input` - A string containing the data
+        ///
+        /// # Examples
+        ///
+        /// ```
+        /// let input: &str = "1 2 3; 4 5 6; 7 8 9";
+        /// let data: treerustler::data::Data = treerustler::data::Data::from_string(input);
+        /// assert_eq!(data.rows, 3);
+        /// assert_eq!(data.cols, 3);
+        /// assert_eq!(data.data[0][0], 1.0);
+        /// ```
+        pub fn from_string(input: &str) -> Data {
+            let mut data: Vec<Vec<f64>> = Vec::new();
+            let rows: Vec<&str> = input.split(";").collect();
+            for row in rows {
+                let entries: Vec<&str> = row.split_whitespace().collect();
+                let mut row_entries: Vec<f64> = Vec::new();
+                for entry in entries {
+                    row_entries.push(entry.parse::<f64>().unwrap());
+                }
+                data.push(row_entries);
+            }
+            let row_size: usize = data.len();
+            let col_size: usize = data[0].len();
+            Data {
+                rows: row_size,
+                cols: col_size,
+                data,
+            }
         }
     }
 }
