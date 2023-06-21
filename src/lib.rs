@@ -180,6 +180,21 @@ pub mod data {
             _temp.into_iter().map(|x| f64::from_bits(x)).collect()
         }
 
+        /// Returns a vector of booleans indicating whether the value in the column is less than the
+        /// threshold.
+        ///
+        /// # Arguments
+        ///
+        /// * `col_idx` - The index of the column to be returned
+        /// * `threshold` - The threshold to compare the column values to
+        ///
+        /// # Examples
+        ///
+        /// ```
+        /// let data: treerustler::data::Data = treerustler::data::Data::from_string("1 2 3; 4 5 6; 4 8 9");
+        /// let lt_eq: Vec<bool> = data.lt_eq(1, 4.0);
+        /// assert_eq!(lt_eq, vec![true, false, false])
+        /// ```
         pub fn lt_eq(&self, col_idx: usize, threshold: f64) -> Vec<bool> {
             let col_values: Vec<f64> = self.get_col(col_idx);
             col_values.iter().map(|&x| x <= threshold).collect()

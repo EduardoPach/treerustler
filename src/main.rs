@@ -1,6 +1,5 @@
 #[allow(dead_code)]
 use rand::prelude::*;
-use std::collections::HashSet;
 use treerustler::data;
 use treerustler::utils;
 
@@ -19,22 +18,16 @@ fn main() {
     let data: data::Data = data::Data::from_random(10, 3);
     println!("{:#?}", data);
 
-    // let mut f: Vec<f64> = vec![1.0, 1.0, 2.0, 2.5, 3.3, 3.3, 4.0];
-    // let temp_f: Vec<u64> = f.iter().map(|&value| value.to_bits()).collect();
-    // let unique_values: HashSet<u64> = temp_f.into_iter().collect();
-    // let un: Vec<f64> = unique_values
-    //     .into_iter()
-    //     .map(|value: u64| f64::from_bits(value))
-    //     .collect();
-    // println!("{:?}", un);
-
     let d: data::Data =
         data::Data::from_string(&"1.1 2.4; 1.1 0.0; 5.5 3.1; 4.0 4.0; 4.0 1.25; 6.1 3.1");
     let col_idx: usize = 1;
+    let threshold: f64 = 2.0;
     let col_values: Vec<f64> = d.get_col(col_idx);
     let unique_values: Vec<f64> = d.unique(col_idx);
+    let lt_eq: Vec<bool> = d.lt_eq(col_idx, threshold);
 
     println!("Data = {:#?}", d);
     println!("Data[:, {}] = {:?}", col_idx, col_values);
     println!("Unique Values: {:?}", unique_values);
+    println!("Less than or equal to {}: {:?}", threshold, lt_eq);
 }
