@@ -1,5 +1,4 @@
 #[allow(dead_code)]
-
 pub mod utils {
     use std::collections::HashMap;
     /// Computes the relative frequency of each unique element in a vector
@@ -198,6 +197,25 @@ pub mod data {
         pub fn lt_eq(&self, col_idx: usize, threshold: f64) -> Vec<bool> {
             let col_values: Vec<f64> = self.get_col(col_idx);
             col_values.iter().map(|&x| x <= threshold).collect()
+        }
+    }
+}
+
+#[allow(dead_code)]
+pub mod tree {
+    use std::collections::HashMap;
+
+    struct Node {
+        feature: usize,
+        threshold: f64,
+        left: Option<Box<Node>>,
+        right: Option<Box<Node>>,
+        value: Option<HashMap<u8, f64>>,
+    }
+
+    impl Node {
+        fn is_leaf(&self) -> bool {
+            self.value.is_some()
         }
     }
 }
