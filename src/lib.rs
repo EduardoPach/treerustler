@@ -66,6 +66,7 @@ pub mod utils {
 
 pub mod data {
     use rand::prelude::*;
+    use std::collections::HashSet;
 
     /// A struct for storing data in a matrix format.
     #[derive(Debug)]
@@ -132,6 +133,51 @@ pub mod data {
                 cols: col_size,
                 data,
             }
+        }
+
+        /// Function to index column in Data Struct (dumb function to avoid impleting with std::ops::Index)
+        ///
+        /// # Arguments
+        ///
+        /// * `col_idx` - The index of the column to be returned
+        ///
+        /// # Examples
+        ///
+        /// ```
+        /// let data: treerustler::data::Data = treerustler::data::Data::from_string("1 2 3; 4 5 6; 7 8 9");
+        /// let col: Vec<f64> = data.get_col(0);
+        /// assert_eq!(col, vec![1.0, 4.0, 7.0]);
+        ///
+        pub fn get_col(&self, col_idx: usize) -> Vec<f64> {
+            // Maybe it's worth making Data col-major instead of row-major
+            self.data
+                .iter()
+                .map(|row| *row.get(col_idx).unwrap())
+                .collect()
+        }
+
+        /// Gets the sorted unique values in a column of the data matrix.
+        ///
+        /// # Arguments
+        ///
+        /// * `col_idx` - The index of the column to be returned
+        ///
+        /// # Examples
+        ///
+        /// ```
+        /// let data: treerustler::data::Data = treerustler::data::Data::from_string("1 2 3; 4 5 6; 4 8 9");
+        /// let unique_values: Vec<f64> = data.unique(0);
+        /// println!("{:?}", unique_values);
+        /// ```
+        pub fn unique(&self, col: usize) -> Vec<f64> {
+            let col_values: Vec<f64> = self.get_col(col);
+            // Had to use this HashSet u64 trick because Hash or Eq Trait weren't implemented for f64
+            let _temp: HashSet<u64> = col_values.iter().map(|&x| x.to_bits()).collect();
+            // HashSet doesn't keep order so we first order the Vec<u64> and then convert back to Vec<f64>
+            // sort_floats() is in nightly so we have to do this
+            let mut _temp: Vec<u64> = _temp.into_iter().map(|x| x).collect();
+            _temp.sort();
+            _temp.into_iter().map(|x| f64::from_bits(x)).collect()
         }
     }
 }
