@@ -180,7 +180,7 @@ pub mod data {
             _temp.into_iter().map(|x| f64::from_bits(x)).collect()
         }
 
-        pub fn gt_eq(&self, col_idx: usize, threshold: f64) -> Vec<bool> {
+        pub fn lt_eq(&self, col_idx: usize, threshold: f64) -> Vec<bool> {
             let col_values: Vec<f64> = self.get_col(col_idx);
             col_values.iter().map(|&x| x <= threshold).collect()
         }
