@@ -85,8 +85,8 @@ pub fn find_best_split(x: &Data, y: &Vec<u8>) -> (usize, f64) {
     let n_cols: usize = x.cols;
     let mut col_idx: usize = 0;
 
-    let mut best_feature: usize;
-    let mut best_threshold: f64;
+    let mut best_feature: usize = 0;
+    let mut best_threshold: f64 = 0.0;
     let mut best_score: f64 = std::f64::INFINITY;
     let len: f64 = y.len() as f64;
 

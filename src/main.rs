@@ -1,4 +1,5 @@
 #![allow(unused_imports)]
+#![allow(dead_code)]
 use rand::prelude::*;
 use treerustler::{data, tree, tree::utils};
 
@@ -9,24 +10,11 @@ fn get_fake_data() -> (data::Data, Vec<u8>) {
     (x, y)
 }
 
-fn do_something(x: &data::Data, left_idx: Vec<bool>) -> data::Data {
-    let left_data = x
-        .data
-        .iter()
-        .zip(left_idx.iter())
-        .filter_map(|(row, &b)| if b { Some(row.clone()) } else { None })
-        .collect();
-
-    data::Data {
-        rows: x.rows,
-        cols: x.cols,
-        data: left_data,
-    }
-}
-
 fn main() {
     // let v: Vec<u8> = vec![1, 1, 1, 1, 1, 0, 0, 0, 0, 0];
     // println!("{:?}", v);
+    // let probabilities = utils::get_probabilities(&v);
+    // println!("{:?}", probabilities);
     // let entropy: f64 = utils::entropy_loss(&v);
     // println!("Entropy Loss: {}", entropy);
     // let gini: f64 = utils::gini_index(&v);
@@ -51,7 +39,7 @@ fn main() {
     println!("X = {:#?}", x);
     println!("y = {:?}", y);
 
-    let left_x = do_something(&x, vec![true, true, false, false, true]);
-    println!("X = {:#?}", x);
-    println!("Left X = {:#?}", left_x)
+    let mut model = tree::DecisionTreeClassifier::new(10, 2);
+    model.fit(&x, &y);
+    println!("{:#?}", model);
 }

@@ -22,11 +22,19 @@ impl Node {
 #[derive(Debug)]
 pub struct DecisionTreeClassifier {
     root: Option<Box<Node>>,
-    max_depth: usize,
-    min_samples_split: usize,
+    pub max_depth: usize,
+    pub min_samples_split: usize,
 }
 
 impl DecisionTreeClassifier {
+    pub fn new(max_depth: usize, min_samples_split: usize) -> DecisionTreeClassifier {
+        DecisionTreeClassifier {
+            root: None,
+            max_depth,
+            min_samples_split,
+        }
+    }
+
     fn build_tree(&self, x: &Data, y: &Vec<u8>, depth: usize) -> Node {
         // Check if we should stop
         if self.should_stop(depth, &y) {
@@ -45,6 +53,19 @@ impl DecisionTreeClassifier {
             let (best_feature, best_threshold) = utils::find_best_split(x, y);
             // Get the left and right indices
             let left_idx: Vec<bool> = x.lt_eq(best_feature, best_threshold);
+            // If after splitting left is all true or all false, then we should stop
+            if left_idx.iter().all(|&b| b) {
+                // Get the value for the leaf node
+                let value: HashMap<u8, f64> = utils::get_probabilities(&y);
+                // Create the leaf node
+                return Node {
+                    feature: None,
+                    threshold: None,
+                    left: None,
+                    right: None,
+                    value: Some(value),
+                };
+            }
             // Get the left and right data
             let split: utils::Split = utils::get_split(x, y, left_idx);
             // Build the left and right subtrees
@@ -69,18 +90,18 @@ impl DecisionTreeClassifier {
         // Check if there's a single class
         let n_classes: usize = y.iter().collect::<HashSet<_>>().len();
 
-        depth <= self.max_depth || n_samples < self.min_samples_split || n_classes == 1
+        depth > self.max_depth || n_samples < self.min_samples_split || n_classes == 1
     }
 
-    fn traverse_tree(&self, x: Data) -> HashMap<u8, f64> {
-        // Will Implement later
+    // fn traverse_tree(&self, x: Data) -> HashMap<u8, f64> {
+    //     // Will Implement later
+    // }
+
+    pub fn fit(&mut self, x: &Data, y: &Vec<u8>) -> () {
+        self.root = Some(Box::new(self.build_tree(x, y, 0)));
     }
 
-    pub fn fit(x: Data, y: Vec<u8>) -> () {
-        // Will Implement later
-    }
-
-    pub fn predict() -> Vec<u8> {
-        // Will Implement later
-    }
+    // pub fn predict() -> Vec<u8> {
+    //     // Will Implement later
+    // }
 }
