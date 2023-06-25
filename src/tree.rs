@@ -93,15 +93,26 @@ impl DecisionTreeClassifier {
         depth > self.max_depth || n_samples < self.min_samples_split || n_classes == 1
     }
 
-    // fn traverse_tree(&self, x: Data) -> HashMap<u8, f64> {
-    //     // Will Implement later
-    // }
+    fn traverse_tree(&self, x: &Vec<f64>) -> HashMap<u8, f64> {
+        let mut node: &Node = self.root.as_ref().unwrap();
+        while !node.is_leaf() {
+            let feature: usize = node.feature.unwrap();
+            let threshold: f64 = node.threshold.unwrap();
+
+            if x[feature] <= threshold {
+                node = node.left.as_ref().unwrap();
+            } else {
+                node = node.right.as_ref().unwrap();
+            }
+        }
+        node.value.as_ref().unwrap().clone()
+    }
+
+    pub fn predict(&self, x: &Data) -> Vec<u8> {
+        // Will Implement later
+    }
 
     pub fn fit(&mut self, x: &Data, y: &Vec<u8>) -> () {
         self.root = Some(Box::new(self.build_tree(x, y, 0)));
     }
-
-    // pub fn predict() -> Vec<u8> {
-    //     // Will Implement later
-    // }
 }
