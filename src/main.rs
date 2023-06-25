@@ -41,5 +41,6 @@ fn main() {
 
     let mut model = tree::DecisionTreeClassifier::new(10, 2);
     model.fit(&x, &y);
-    println!("{:#?}", model);
+    let prediction = model.predict_proba(&x);
+    println!("Prediction: {:#?}", prediction);
 }

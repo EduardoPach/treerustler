@@ -93,6 +93,11 @@ impl DecisionTreeClassifier {
         depth > self.max_depth || n_samples < self.min_samples_split || n_classes == 1
     }
 
+    /// Given a single observation `x`, traverse the tree and return the value at the leaf node.
+    ///
+    /// # Arguments
+    ///
+    /// * `x` - A single observation
     fn traverse_tree(&self, x: &Vec<f64>) -> HashMap<u8, f64> {
         let mut node: &Node = self.root.as_ref().unwrap();
         while !node.is_leaf() {
@@ -108,8 +113,14 @@ impl DecisionTreeClassifier {
         node.value.as_ref().unwrap().clone()
     }
 
-    pub fn predict(&self, x: &Data) -> Vec<u8> {
-        // Will Implement later
+    /// Given a matrix of observations `x`, traverse the tree and return the probability
+    /// distribution for each observation.
+    ///
+    /// # Arguments
+    ///
+    /// * `x` - A matrix of observations
+    pub fn predict_proba(&self, x: &Data) -> Vec<HashMap<u8, f64>> {
+        x.data.iter().map(|row| self.traverse_tree(row)).collect()
     }
 
     pub fn fit(&mut self, x: &Data, y: &Vec<u8>) -> () {
