@@ -89,6 +89,21 @@ impl Data {
             .collect()
     }
 
+    pub fn get_rows(&self, row_idx: Vec<bool>) -> Data {
+        let data_rows: Vec<Vec<f64>> = self
+            .data
+            .iter()
+            .zip(row_idx.iter())
+            .filter_map(|(row, &b)| if b { Some(row.clone()) } else { None })
+            .collect();
+
+        Data {
+            rows: data_rows.len(),
+            cols: self.cols,
+            data: data_rows,
+        }
+    }
+
     /// Gets the sorted unique values in a column of the data matrix.
     ///
     /// # Arguments
