@@ -39,8 +39,9 @@ fn main() {
     println!("X = {:#?}", x);
     println!("y = {:?}", y);
 
-    let mut model = tree::DecisionTreeClassifier::new(10, 2);
+    let mut model = tree::DecisionTreeClassifier::new(1, 2);
     model.fit(&x, &y);
+    println!("Model: {:#?}", model);
     let prediction = model.predict_proba(&x);
     println!("Prediction: {:#?}", prediction);
 }
