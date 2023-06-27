@@ -90,7 +90,7 @@ impl DecisionTreeClassifier {
         // Check if there's a single class
         let n_classes: usize = y.iter().collect::<HashSet<_>>().len();
 
-        depth > self.max_depth || n_samples < self.min_samples_split || n_classes == 1
+        depth >= self.max_depth || n_samples < self.min_samples_split || n_classes == 1
     }
 
     /// Given a single observation `x`, traverse the tree and return the value at the leaf node.
