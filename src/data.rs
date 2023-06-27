@@ -10,6 +10,11 @@ pub struct Data {
 }
 
 impl Data {
+    pub fn from_data(data: Vec<Vec<f64>>) -> Data {
+        let rows: usize = data.len();
+        let cols: usize = data[0].len();
+        Data { rows, cols, data }
+    }
     /// Generates a random matrix of size (rows, cols) with values in the range [0, 1).
     ///
     /// # Arguments
